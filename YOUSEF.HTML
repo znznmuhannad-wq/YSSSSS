@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Y.S Cut: Yousef Salman</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;700&family=Oswald:wght@200;300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --cinema-black: #0a0a0a;
+            --neon-red: #ff3b30;
+            --focus-green: #32d74b;
+            --dior-gold: #D4AF37;
+        }
+
+        body {
+            background-color: var(--cinema-black);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .title-minimal {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .font-credits {
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .font-mono-code {
+            font-family: 'Space Mono', monospace;
+        }
+        
+        .font-handwriting {
+            font-family: 'Caveat', cursive;
+        }
+
+        /* Film Grain */
+        .film-grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            z-index: 50;
+        }
+
+        /* Scrollbar Hide */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .chapter-number {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            color: transparent;
+        }
+
+        /* Message Box */
+        #messageBox {
+            position: fixed; bottom: 20px; right: 20px; z-index: 100;
+            background: #111; color: white; padding: 15px 25px; border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); border-left: 5px solid #ff3b30;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+        #messageBox.show { opacity: 1; visibility: visible; }
+    </style>
+</head>
+<body class="antialiased selection:bg-red-600 selection:text-white">
+
+    <!-- Message Box Element -->
+    <div id="messageBox"></div>
+
+    <div class="film-grain"></div>
+
+    <!-- Fixed Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full p-4 md:p-6 z-50 flex justify-end items-center mix-blend-difference pointer-events-none">
+        <div class="flex items-center gap-4">
+            <div class="font-credits text-[10px] md:text-xs tracking-[0.2em] border border-white/30 px-2 py-1 rounded-full whitespace-nowrap">
+                ANNIVERSARY EDITION
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 md:w-3 md:h-3 bg-red-600 rounded-full animate-pulse"></div>
+                <span class="font-mono text-[10px] md:text-xs">REC</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Intro Section -->
+    <section class="h-screen w-full flex flex-col justify-center items-center relative overflow-hidden" id="intro">
+        <div class="absolute inset-0 bg-[url('https://i.ibb.co/mV0KKvyt/Whats-App-Image-2025-12-05-at-12-07-19-AM-2.jpg')] bg-cover bg-center opacity-30 scale-110" id="intro-bg"></div>
+        <div class="vignette absolute inset-0 z-10"></div>
+        <div class="z-20 text-center px-4 w-full">
+            <h2 class="font-credits text-yellow-500 tracking-widest text-xs md:text-sm mb-4 opacity-0 intro-anim">STARRING YOUSEF SALMAN</h2>
+            <h1 class="text-5xl sm:text-6xl md:text-9xl mb-2 opacity-0 intro-anim leading-tight break-words">THE<br>Y.S<br>CUT</h1>
+            <p class="font-mono text-xs md:text-base text-gray-400 mt-6 opacity-0 intro-anim">Based on a true story</p>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 opacity-0 intro-anim">
+            <i data-lucide="chevron-down" class="w-8 h-8 animate-bounce text-gray-500"></i>
+        </div>
+    </section>
+
+    <!-- DEDICATION -->
+    <section id="dedication" class="min-h-screen w-full flex flex-col items-center justify-center bg-black relative border-y border-zinc-900 z-30 py-12">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-gradient-to-b from-zinc-900/30 to-transparent opacity-50 pointer-events-none"></div>
+        
+        <div class="container mx-auto px-4 md:px-6 max-w-3xl relative z-10 gsap-fade-up">
+            <div class="mb-8 md:mb-12 text-center">
+                <i data-lucide="star" class="w-10 h-10 md:w-12 md:h-12 text-yellow-500 mx-auto mb-4 opacity-80 animate-pulse"></i>
+                <h2 class="font-credits text-xs md:text-sm tracking-[0.4em] text-gray-500 uppercase mb-2">TO MY STAR</h2>
+                <div class="w-12 md:w-16 h-[1px] bg-yellow-600 mx-auto"></div>
+            </div>
+
+            <div class="bg-zinc-900/50 p-6 md:p-10 rounded border border-zinc-800 shadow-2xl relative overflow-hidden">
+                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-600 via-transparent to-transparent opacity-50"></div>
+                 
+                 <div class="font-mono-code text-sm md:text-xl text-gray-300 leading-relaxed min-h-[350px] md:min-h-[300px] text-left">
+                    <span id="typewriter-text" class="whitespace-pre-wrap"></span><span class="cursor">|</span>
+                 </div>
+            </div>
+
+            <div class="mt-8 md:mt-12 flex flex-col items-center gap-2 opacity-0 reveal-sig transition-opacity duration-1000">
+                <span class="font-mono text-[10px] md:text-xs text-gray-500 uppercase tracking-widest">WITH LOVE</span>
+                <div class="h-[1px] w-8 md:w-10 bg-gray-700"></div>
+                <span class="font-credits text-base md:text-lg text-white tracking-widest text-center">Zanzountak that loves you the most</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 1: Amman -->
+    <section id="amman" class="min-h-screen w-full flex flex-col items-center justify-center relative py-20 bg-zinc-900 border-t border-zinc-800">
+        <div class="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            
+            <div class="gsap-fade-up order-2 md:order-1">
+                <div class="relative flex flex-col items-start justify-center mb-8">
+                    <div class="absolute top-[-40px] bottom-[-20px] left-6 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+                    <div class="relative z-10 bg-zinc-900 py-4 pr-6 flex flex-col items-start text-left">
+                        <span class="chapter-number text-4xl font-bold block leading-none opacity-50 mb-1">01</span>
+                        <h2 class="text-4xl md:text-6xl text-white title-minimal">CUT TO: AMMAN</h2>
+                        <p class="text-[10px] md:text-xs text-gray-500 font-mono-code tracking-[0.3em] uppercase mt-2">17YO • THE BEGINNING</p>
+                    </div>
+                </div>
+                
+                <h3 class="font-credits text-lg md:text-xl text-yellow-500 mb-4 tracking-widest">17YO YOUSEF SALMAN</h3>
+                
+                <p class="text-base md:text-xl text-gray-300 font-light leading-relaxed">
+                    <span class="font-bold text-white">INT. SAE INSTITUTE - 2019.</span> A 17-year-old Yousef made the choice to pursue what he loved. He enrolled in Filmmaking at SAE Institute Amman, marking the start of everything. This was the first chapter of his life behind the lens.
+                </p>
+                
+                <div class="mt-6 md:mt-8 flex items-center gap-4 text-xs md:text-sm font-mono text-gray-500">
+                    <i data-lucide="plane-takeoff" class="text-white w-4 h-4 md:w-5 md:h-5"></i>
+                    <span>DXB ➔ AMM</span>
+                </div>
+            </div>
+            
+            <div class="flex flex-col gap-6 order-1 md:order-2">
+                <div class="relative h-[200px] bg-black rounded-lg border border-zinc-700 overflow-hidden p-4 flex items-center justify-center gsap-scale-in shadow-lg">
+                    <div class="absolute top-2 left-2 text-[10px] font-mono text-gray-500">FLIGHT PATH LOG</div>
+                    <svg viewBox="0 0 400 200" class="w-full h-full opacity-80">
+                        <path d="M 50 150 Q 200 20 350 80" stroke="#333" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+                        <circle cx="50" cy="150" r="5" fill="#fff" />
+                        <text x="30" y="180" fill="#fff" font-family="monospace" font-size="12">DUBAI</text>
+                        <circle cx="350" cy="80" r="5" fill="#ff3b30" class="animate-pulse" />
+                        <text x="330" y="60" fill="#ff3b30" font-family="monospace" font-size="12">AMMAN</text>
+                        <circle cx="0" cy="0" r="4" fill="white">
+                            <animateMotion path="M 50 150 Q 200 20 350 80" dur="3s" repeatCount="indefinite" />
+                        </circle>
+                    </svg>
+                </div>
+                <div class="relative h-[300px] bg-zinc-800/50 rounded-lg p-4 flex items-center justify-center border border-zinc-700/50 gsap-scale-in">
+                    <div class="bg-white p-3 pb-8 shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500 w-64">
+                        <div class="aspect-[4/5] overflow-hidden bg-gray-200">
+                            <img src="https://i.ibb.co/B5VYcT9p/Whats-App-Image-2025-12-05-at-12-34-28-PM.jpg" alt="Yousef in Jordan" class="w-full h-full object-cover filter grayscale-[0.2] hover:grayscale-0 transition-all duration-700">
+                        </div>
+                        <div class="mt-2 text-center">
+                            <span class="font-mono text-black text-[10px] font-bold tracking-widest uppercase">Start of the Journey</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 2: The Hustle -->
+    <section id="hustle" class="min-h-screen w-full bg-black py-20 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-zinc-900 to-transparent opacity-50"></div>
+        <div class="container mx-auto px-4 md:px-6 relative z-10">
+            
+            <div class="relative flex flex-col items-center justify-center mb-16">
+                <div class="absolute top-[-40px] bottom-[-20px] w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+                <div class="relative z-10 bg-black py-4 px-6 flex flex-col items-center text-center">
+                    <span class="chapter-number text-6xl md:text-[10rem] font-bold block leading-none opacity-50 mb-2">02</span>
+                    <h2 class="text-4xl md:text-7xl text-white title-minimal">THE HUSTLE ERA</h2>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 max-w-6xl mx-auto">
+                <div class="bg-zinc-900 p-6 rounded-sm border-l-4 border-yellow-500 gsap-slide-right">
+                    <h3 class="text-xl md:text-2xl mb-2">The Youngest on Set</h3>
+                    <p class="text-sm md:text-base text-gray-400">Usually the youngest person in the room, but the one who is doing the best.</p>
+                </div>
+                <div class="bg-zinc-900 p-6 rounded-sm border-l-4 border-blue-500 gsap-slide-right delay-100">
+                    <h3 class="text-xl md:text-2xl mb-2">Jack of All Trades</h3>
+                    <p class="text-sm md:text-base text-gray-400">Audio. Lighting. Grip. If it needed to be done, Yousef did it.</p>
+                </div>
+                <div class="bg-zinc-900 p-6 rounded-sm border-l-4 border-red-500 gsap-slide-right delay-200">
+                    <h3 class="text-xl md:text-2xl mb-2">More Than Work</h3>
+                    <p class="text-sm md:text-base text-gray-400">The days were long, but the company made it worth it. He was the spirit of the set, making memories just as important as the projects.</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+                
+                <div class="w-full max-w-md bg-zinc-900/90 rounded-lg border border-zinc-700 mx-auto md:mx-0 gsap-fade-up overflow-hidden shadow-2xl backdrop-blur-sm">
+                    <div class="bg-zinc-800 p-3 border-b border-zinc-700 flex justify-between items-center">
+                        <span class="font-mono text-[10px] md:text-xs text-gray-400 tracking-widest uppercase"> <i data-lucide="user" class="inline w-3 h-3 mr-1"></i> CHARACTER STATS</span>
+                        <div class="flex gap-1.5">
+                            <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                            <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5 md:p-6 space-y-6">
+                        
+                        <div class="flex items-center justify-between group">
+                            <div class="flex items-center gap-3 md:gap-4">
+                                <div class="p-2 bg-amber-900/20 rounded text-amber-500 border border-amber-900/30"><i data-lucide="cup-soda" class="w-5 h-5"></i></div>
+                                <div><p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider">FUEL SOURCE</p><p class="text-sm font-bold text-gray-200">Iced Americanos & Redbulls</p></div>
+                            </div>
+                            <i data-lucide="zap" class="w-4 h-4 text-amber-500 animate-pulse"></i>
+                        </div>
+
+                        <div class="flex items-center justify-between group">
+                            <div class="flex items-center gap-3 md:gap-4">
+                                <div class="p-2 bg-red-900/20 rounded text-red-500 border border-red-900/30"><i data-lucide="cloud-off" class="w-5 h-5"></i></div>
+                                <div><p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider">SLEEP STATUS</p><p class="text-sm font-bold text-red-500 font-mono tracking-wide">404 Error: Not Found</p></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between group">
+                            <div class="flex items-center gap-3 md:gap-4">
+                                <div class="p-2 bg-zinc-800 rounded text-gray-400 border border-zinc-700"><i data-lucide="shirt" class="w-5 h-5"></i></div>
+                                <div><p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider">OUTFIT</p><p class="text-sm font-bold text-gray-200">50 Shades of Black</p></div>
+                            </div>
+                            <div class="flex gap-1">
+                                <div class="w-3 h-3 bg-[#2a2a2a] rounded-sm border border-gray-600" title="Dark Gray"></div>
+                                <div class="w-3 h-3 bg-[#1a1a1a] rounded-sm border border-gray-600" title="Darker Gray"></div>
+                                <div class="w-3 h-3 bg-[#000000] rounded-sm border border-gray-600" title="Black"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between group">
+                            <div class="flex items-center gap-3 md:gap-4">
+                                <div class="p-2 bg-blue-900/20 rounded text-blue-400 border border-blue-900/30"><i data-lucide="message-square-dashed" class="w-5 h-5"></i></div>
+                                <div><p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider">FAVORITE LIE</p><p class="text-sm font-bold text-gray-200 italic">"Wrapping in 5 mins"</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center md:justify-start gsap-fade-up" data-speed="0.8">
+                    <div class="relative transform rotate-2 hover:rotate-0 transition-transform duration-500 group cursor-pointer">
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-8 bg-red-600 shadow-md z-20 flex items-center justify-center transform -rotate-2">
+                            <span class="text-white font-bold text-xs tracking-widest uppercase">SURVIVAL MODE</span>
+                        </div>
+                        <div class="bg-white p-2 pb-10 rounded shadow-2xl w-64 md:w-72">
+                            <div class="aspect-[3/4] bg-gray-200 overflow-hidden relative">
+                                <img src="https://i.ibb.co/bR88NR0B/Whats-App-Image-2025-12-05-at-12-56-22-AM-6.jpg" alt="Hustle Reality" class="w-full h-full object-cover filter grayscale-[0.2] group-hover:grayscale-0 transition-all">
+                            </div>
+                            <div class="mt-4 text-center px-2">
+                                <p class="font-mono text-xs text-black font-bold uppercase leading-tight">Visual Representation of<br><span class="text-red-600">"I got this"</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BEHIND THE SCENES -->
+    <section id="behind" class="py-24 bg-[#0a0a0a] border-t border-zinc-900 relative overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none select-none overflow-hidden">
+            <span class="absolute top-10 left-0 text-[15vw] font-bold text-zinc-900 opacity-20 leading-none">DIRECTOR</span>
+            <span class="absolute bottom-0 right-0 text-[15vw] font-bold text-zinc-900 opacity-20 leading-none">VISION</span>
+            <span class="absolute top-1/2 right-10 text-[10vw] font-credits text-zinc-800 opacity-10 rotate-90">ACTION</span>
+        </div>
+
+        <div class="container mx-auto px-4 md:px-6 relative z-10">
+            
+            <div class="relative max-w-5xl mx-auto h-[600px] md:h-[800px] w-full">
+                
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 rotate-[-3deg] hover:rotate-0 transition-transform duration-500 cursor-pointer">
+                    <div class="bg-[#f0f0f0] px-6 py-10 md:px-12 md:py-16 shadow-[0_20px_50px_rgba(0,0,0,0.8)] transform hover:scale-105 transition-transform duration-300 border border-zinc-300 relative">
+                        <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/30 backdrop-blur-sm border border-white/20 rotate-1 shadow-sm"></div>
+                        <h2 class="font-handwriting text-3xl md:text-6xl text-[#c1121f] text-center leading-tight" style="transform: rotate(-2deg);">
+                            BEHIND<br>THE<br>SCENES
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="absolute top-0 left-0 w-[40%] h-[35%] z-20 transform -rotate-6 hover:z-40 hover:scale-110 transition-all duration-500 cursor-pointer">
+                    <div class="w-full h-full bg-white p-1 md:p-2 shadow-xl">
+                        <img src="https://i.ibb.co/0L8hjxz/Whats-App-Image-2025-12-05-at-12-56-20-AM.jpg" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500">
+                    </div>
+                </div>
+
+                <div class="absolute top-4 right-0 w-[45%] h-[35%] z-10 transform rotate-3 hover:z-40 hover:scale-110 transition-all duration-500 cursor-pointer">
+                    <div class="w-full h-full bg-white p-1 md:p-2 shadow-xl">
+                        <img src="https://i.ibb.co/HTmMj13M/Whats-App-Image-2025-12-05-at-12-56-22-AM-3.jpg" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500">
+                    </div>
+                </div>
+
+                <div class="absolute top-[38%] left-0 md:left-[2%] w-[35%] h-[30%] z-10 transform rotate-3 hover:z-40 hover:scale-110 transition-all duration-500 cursor-pointer">
+                    <div class="w-full h-full bg-white p-1 md:p-2 shadow-xl">
+                        <img src="https://i.ibb.co/twSs25m1/Whats-App-Image-2025-12-05-at-12-56-20-AM-1.jpg" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500">
+                    </div>
+                </div>
+
+                <div class="absolute top-[40%] right-0 md:right-[2%] w-[35%] h-[30%] z-10 transform -rotate-3 hover:z-40 hover:scale-110 transition-all duration-500 cursor-pointer">
+                    <div class="w-full h-full bg-white p-1 md:p-2 shadow-xl">
+                        <img src="https://i.ibb.co/fY7NmSTQ/Whats-App-Image-2025-12-05-at-12-56-22-AM-4.jpg" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500">
+                    </div>
+                </div>
+
+                <div class="absolute bottom-0 left-[5%] w-[40%] h-[30%] z-20 transform -rotate-2 hover:z-40 hover:scale-110 transition-all duration-500 cursor-pointer">
+                    <div class="w-full h-full bg-white p-1 md:p-2 shadow-xl">
+                        <img src="https://i.ibb.co/Cp5c6K9V/Whats-App-Image-2025-12-05-at-12-56-21-AM-3.jpg" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500" style="object-position: top;">
+                    </div>
+                </div>
+
+                <div class="absolute bottom-4 right-[5%] w-[40%] h-[30%] z-20 transform rotate-4 hover:z-40 hover:scale-110 transition-all duration-500 cursor-pointer">
+                    <div class="w-full h-full bg-white p-1 md:p-2 shadow-xl">
+                        <img src="https://i.ibb.co/vCkYW3fR/Whats-App-Image-2025-12-05-at-12-57-03-PM.jpg" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500">
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="text-center mt-12">
+                <p class="font-mono-code text-[10px] text-zinc-600 tracking-[0.3em] uppercase animate-pulse">HOVER TO REVEAL COLORS</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 3: The Graduation -->
+    <section id="graduation" class="min-h-screen w-full flex flex-col items-center justify-center bg-zinc-950 relative border-t border-zinc-900 py-16 md:py-24">
+        <div class="absolute inset-0 opacity-20 pointer-events-none"><div class="h-full w-[1px] bg-zinc-800 absolute left-1/4"></div><div class="h-full w-[1px] bg-zinc-800 absolute left-3/4"></div><div class="w-full h-[1px] bg-zinc-800 absolute top-1/3"></div></div>
+        
+        <div class="container mx-auto px-4 md:px-6 relative z-10 grid md:grid-cols-2 gap-16 items-center">
+            <div class="gsap-fade-up order-2 md:order-1 text-left">
+                <div class="relative flex flex-col items-start justify-center mb-8 md:mb-12">
+                    <div class="absolute top-[-40px] bottom-[-20px] left-6 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+                    <div class="relative z-10 bg-zinc-950 py-4 pr-6 flex flex-col items-start text-left">
+                        <span class="chapter-number text-4xl font-bold block leading-none opacity-50 mb-2 text-white">03</span>
+                        <h2 class="text-4xl md:text-6xl text-white title-minimal leading-tight">THE<br>GRADUATION</h2>
+                        <div class="inline-flex items-center gap-2 mt-4 border border-yellow-500/30 rounded-full px-3 py-1">
+                            <i data-lucide="graduation-cap" class="w-3 h-3 text-yellow-500"></i>
+                            <span class="text-[10px] md:text-xs text-gray-400 font-mono-code tracking-[0.2em] uppercase">SAE INSTITUTE • 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-8 text-base md:text-xl text-gray-300 font-light leading-relaxed">
+                    <div><h4 class="text-white font-bold uppercase tracking-wide text-sm md:text-base mb-2 border-l-2 border-yellow-500 pl-3">The Student Era Wrap</h4><p>Studies never held back his creativity, but this was the final cut.</p></div>
+                    <div><h4 class="text-white font-bold uppercase tracking-wide text-sm md:text-base mb-2 border-l-2 border-red-500 pl-3">The Real Deal</h4><p>No more safety nets. It was time to face the industry head-on. Life got <span class="text-red-500 font-bold italic">real</span>, the work got serious, and he was officially ready to take on the world.</p></div>
+                </div>
+            </div>
+            <div class="relative h-[450px] md:h-[550px] bg-black rounded-lg border border-zinc-700 overflow-hidden gsap-scale-in shadow-2xl order-1 md:order-2">
+                <img src="https://i.ibb.co/pr3W1dzy/Whats-App-Image-2025-12-05-at-12-07-19-AM-1.jpg" alt="Graduation 2023" class="w-full h-full object-cover opacity-95 hover:opacity-100 hover:scale-105 transition-all duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-8 left-0 w-full flex justify-center z-20">
+                    <span class="inline-flex items-center gap-2 px-5 py-2 bg-black/60 border border-white/20 rounded-full text-white font-mono-code text-xs tracking-widest backdrop-blur-md uppercase"><i data-lucide="award" class="w-4 h-4 text-yellow-500"></i> Class of 2023</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 3.5: B3EED -->
+    <section id="b3eed" class="min-h-screen w-full flex flex-col items-center justify-center bg-zinc-900 relative border-t border-zinc-900 overflow-hidden py-12">
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+        <div class="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
+            <div class="relative group cursor-pointer gsap-scale-in order-2 md:order-1 max-w-sm mx-auto md:max-w-none w-full">
+                <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-purple-900 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+                <div class="relative aspect-[4/5] bg-black rounded-lg border border-zinc-700 overflow-hidden flex flex-col items-center justify-center shadow-2xl">
+                    <img src="https://i.ibb.co/KpLfgm5q/Whats-App-Image-2025-12-05-at-12-07-20-AM.jpg" alt="B3eed Clapperboard" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-0 w-full flex justify-center z-20"><div class="flex flex-col items-center"><i data-lucide="award" class="w-8 h-8 text-yellow-500 mb-1"></i><span class="text-[10px] font-mono text-yellow-500 uppercase tracking-widest">Graduation Project</span></div></div>
+                </div>
+            </div>
+            <div class="gsap-fade-up order-1 md:order-2">
+                
+                <div class="mb-8">
+                     <h2 class="text-6xl md:text-8xl text-white font-black tracking-tighter uppercase relative inline-block" style="font-family: 'Anton', sans-serif; -webkit-text-stroke: 2px black;">
+                        B3EED
+                        <span class="absolute -bottom-2 left-0 w-full h-2 bg-red-600"></span>
+                     </h2>
+                     <p class="text-[10px] md:text-xs text-gray-400 font-mono-code tracking-[0.5em] uppercase mt-4 ml-1">DEBUT FILM • DIRECTOR'S CUT</p>
+                </div>
+
+                <p class="text-base md:text-xl text-gray-300 font-light leading-relaxed mb-8">
+                    This wasn't just a graduation requirement; this was Yousef’s personal signature on the screen.
+                    He didn’t just sit in the Director’s chair for 'B3eed'; he chose total vulnerability and total control, personally handling both Direction and Cinematography. He poured his soul into every frame.
+                    The process was consuming. It meant endless hours, relentless effort, and nights fueled by pure passion. But when the final cut rolled, the exhaustion faded, replaced by pure, undeniable pride.
+                    'B3eed' was the definitive proof the director inside him was finally ready to speak.
+                </p>
+                <div class="flex gap-4 md:gap-8 border-t border-zinc-800 pt-6">
+                     <div class="flex flex-col"><span class="text-2xl md:text-4xl font-bold text-white">1st</span><span class="text-[10px] md:text-xs text-gray-500 font-mono uppercase mt-1">Directorial Debut</span></div>
+                     <div class="flex flex-col"><span class="text-2xl md:text-4xl font-bold text-white">100%</span><span class="text-[10px] md:text-xs text-gray-500 font-mono uppercase mt-1">Creative Control</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 5: Global Release -->
+    <section id="global" class="py-12 bg-zinc-900 border-y border-zinc-800">
+        <div class="container mx-auto px-4 md:px-6 mb-8 text-center">
+            <div class="relative flex flex-col items-center justify-center mb-8">
+                <div class="absolute top-[-40px] bottom-[-20px] w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+                <div class="relative z-10 bg-zinc-900 py-4 px-6 flex flex-col items-center text-center">
+                    <h2 class="text-3xl md:text-6xl text-white title-minimal">GLOBAL RELEASE</h2>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-mono-code tracking-[0.3em] uppercase mt-2">OFFICIAL CREDITS • INTERNATIONAL</p>
+                </div>
+            </div>
+        </div>
+        <div class="relative w-full overflow-hidden bg-black py-8 mb-4">
+            <div class="absolute inset-0 flex items-center justify-around opacity-20 pointer-events-none">
+                <div class="h-[1px] w-full bg-white absolute top-4"></div>
+                <div class="h-[1px] w-full bg-white absolute bottom-4"></div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-8 md:gap-16 items-center px-4 md:px-6">
+                <div class="text-center group cursor-default"><h4 class="text-red-600 text-2xl md:text-4xl font-bold tracking-tighter transition-transform duration-300 group-hover:scale-110 font-credits">NETFLIX</h4></div>
+                <div class="text-center group cursor-default"><h4 class="text-[#D4AF37] text-2xl md:text-4xl font-serif tracking-widest transition-transform duration-300 group-hover:scale-110">DIOR</h4></div>
+                <div class="text-center group cursor-default"><h4 class="text-white text-2xl md:text-4xl font-bold tracking-tight transition-transform duration-300 group-hover:scale-110 font-credits">RIYADH</h4></div>
+                <div class="text-center group cursor-default"><h4 class="text-blue-200 text-2xl md:text-4xl font-serif tracking-widest transition-transform duration-300 group-hover:scale-110">DE BEERS</h4></div>
+                <div class="text-center group cursor-default"><h4 class="text-white text-2xl md:text-4xl font-serif tracking-widest transition-transform duration-300 group-hover:scale-110">LV</h4></div>
+                <div class="text-center group cursor-default"><h4 class="text-green-500 text-2xl md:text-4xl font-bold tracking-tighter transition-transform duration-300 group-hover:scale-110 font-credits">S.A.S</h4></div>
+            </div>
+        </div>
+        <div class="w-full bg-black relative py-2 overflow-hidden border-t-4 border-b-4 border-zinc-800">
+            <div class="absolute top-1 left-0 w-full h-4 bg-[linear-gradient(90deg,transparent_50%,#333_50%)] bg-[size:20px_100%] opacity-50 z-10 pointer-events-none"></div>
+            <div class="absolute top-2 left-0 w-full h-3 bg-[repeating-linear-gradient(90deg,#fff, #fff_8px,transparent_8px,transparent_20px)] opacity-10 z-20 pointer-events-none mix-blend-overlay"></div>
+            <div class="flex overflow-x-auto gap-0 no-scrollbar items-center py-4 px-4 snap-x snap-mandatory">
+                <div class="flex-none w-64 md:w-80 aspect-[4/5] bg-black p-4 snap-center relative group">
+                    <div class="w-full h-full relative overflow-hidden border-2 border-zinc-800">
+                        <img src="https://i.ibb.co/60w7V5S8/Whats-App-Image-2025-12-05-at-12-07-19-AM-3.jpg" alt="S.A.S" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4 pt-12"><span class="text-green-500 font-bold tracking-widest text-xl font-credits">S.A.S</span></div>
+                    </div>
+                </div>
+                <div class="flex-none w-64 md:w-80 aspect-[4/5] bg-black p-4 snap-center relative group">
+                    <div class="w-full h-full relative overflow-hidden border-2 border-zinc-800">
+                        <img src="https://i.ibb.co/60WSv2zH/Whats-App-Image-2025-12-05-at-12-56-21-AM-6.jpg" alt="LV" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4 pt-12"><span class="text-white font-serif tracking-widest text-xl">LOUIS VUITTON</span></div>
+                    </div>
+                </div>
+                <div class="flex-none w-64 md:w-80 aspect-[4/5] bg-black p-4 snap-center relative group">
+                    <div class="w-full h-full relative overflow-hidden border-2 border-zinc-800">
+                        <img src="https://i.ibb.co/2Y73mD4R/Whats-App-Image-2025-12-05-at-12-56-21-AM-7.jpg" alt="Dior" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4 pt-12"><span class="text-[#D4AF37] font-serif tracking-widest text-xl">DIOR</span></div>
+                    </div>
+                </div>
+                <div class="flex-none w-64 md:w-80 aspect-[4/5] bg-black p-4 snap-center relative group">
+                    <div class="w-full h-full relative overflow-hidden border-2 border-zinc-800">
+                        <img src="https://i.ibb.co/twmn5thm/Whats-App-Image-2025-12-05-at-12-56-22-AM-2.jpg" alt="De Beers" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4 pt-12"><span class="text-blue-200 font-serif tracking-widest text-xl">DE BEERS</span></div>
+                    </div>
+                </div>
+                <div class="flex-none w-64 md:w-80 aspect-[4/5] bg-black p-4 snap-center relative group">
+                    <div class="w-full h-full relative overflow-hidden border-2 border-zinc-800">
+                        <img src="https://i.ibb.co/Ps8W4cPF/Whats-App-Image-2025-12-05-at-1-11-54-AM.jpg" alt="Riyadh" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4 pt-12"><span class="text-white font-bold tracking-widest text-xl font-credits">RIYADH</span></div>
+                    </div>
+                </div>
+                <div class="flex-none w-8"></div>
+            </div>
+            <div class="absolute bottom-1 left-0 w-full h-4 bg-[linear-gradient(90deg,transparent_50%,#333_50%)] bg-[size:20px_100%] opacity-50 z-10 pointer-events-none"></div>
+            <div class="absolute bottom-2 left-0 w-full h-3 bg-[repeating-linear-gradient(90deg,#fff, #fff_8px,transparent_8px,transparent_20px)] opacity-10 z-20 pointer-events-none mix-blend-overlay"></div>
+        </div>
+        <p class="text-center text-zinc-500 font-mono text-[10px] mt-4 tracking-widest animate-pulse">
+            <i data-lucide="arrow-left-right" class="inline w-3 h-3 mr-1"></i> SCROLL FOR MEMORIES
+        </p>
+    </section>
+
+  
+    </section>
+
+    <!-- Portfolio -->
+    <section id="portfolio" class="min-h-screen w-full flex flex-col justify-center bg-black relative py-20">
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 md:px-6 max-w-6xl relative z-10">
+            
+            <div class="relative flex flex-col items-center justify-center mb-24">
+                <div class="absolute top-[-100px] bottom-[-50px] w-[1px] bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
+                <div class="relative z-10 bg-black py-8 px-6 flex flex-col items-center text-center">
+                    <h2 class="text-5xl md:text-8xl text-white font-light tracking-[0.2em] font-sans" style="font-family: 'Oswald', sans-serif; font-weight: 300;">PORTFOLIO</h2>
+                    <p class="text-[10px] md:text-xs text-gray-400 font-mono-code tracking-[0.4em] uppercase mt-4">YOUSEF SALMAN • FILMMAKING</p>
+                </div>
+            </div>
+
+            <div id="portfolioContainer" class="flex overflow-x-auto gap-6 px-4 pb-8 snap-x snap-mandatory no-scrollbar cursor-grab active:cursor-grabbing select-none">
+                
+                <div class="flex-none w-[85vw] md:w-[600px] bg-zinc-900/50 border border-zinc-800 p-6 md:p-8 rounded-xl snap-center hover:border-red-900/50 transition-colors pointer-events-none md:pointer-events-auto">
+                    <h3 class="text-4xl md:text-5xl text-red-600 font-bold font-credits mb-6 border-b border-zinc-800 pb-4">2025</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-zinc-900/80 rounded border border-zinc-800 hover:border-red-600/50 transition-colors">
+                            <span class="text-white font-bold">Okhti w Khalftha</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 font-mono-code bg-black/50 px-2 py-1 rounded">Focus Puller</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-zinc-900/80 rounded border border-zinc-800 hover:border-red-600/50 transition-colors">
+                            <span class="text-white font-bold">Riyadh Rendezvous</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 font-mono-code bg-black/50 px-2 py-1 rounded">Focus Puller</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-zinc-900/80 rounded border border-zinc-800 hover:border-red-600/50 transition-colors">
+                            <span class="text-white font-bold">GHS (Event)</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 font-mono-code bg-black/50 px-2 py-1 rounded">Live Capture</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-none w-[85vw] md:w-[600px] bg-zinc-900/50 border border-zinc-800 p-6 md:p-8 rounded-xl snap-center hover:border-white/20 transition-colors pointer-events-none md:pointer-events-auto">
+                    <h3 class="text-4xl md:text-5xl text-white font-bold font-credits mb-6 border-b border-zinc-800 pb-4">2024</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">OWK (TV Series)</span><span class="text-[10px] text-zinc-500">Focus Puller</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">AMBUSH (Short)</span><span class="text-[10px] text-zinc-500">VTO</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">Capital Bank</span><span class="text-[10px] text-zinc-500">Focus Puller</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">Bank of Jordan</span><span class="text-[10px] text-zinc-500">Focus Puller</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">Kyan / Esla</span><span class="text-[10px] text-zinc-500">Focus Puller</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">SAE TVC</span><span class="text-[10px] text-zinc-500">Director</span></div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">Al Rawabi School</span><span class="text-[10px] text-zinc-500">Cam Op</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">Boomeh (Feature)</span><span class="text-[10px] text-zinc-500">2nd AC</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">Kees Dam</span><span class="text-[10px] text-zinc-500">2nd AC</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">Talabat / Arab Bank</span><span class="text-[10px] text-zinc-500">2nd AC</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">Min Hon (MV)</span><span class="text-[10px] text-zinc-500">Cam Op</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-300 text-sm">A Sotto Voce Night</span><span class="text-[10px] text-zinc-500">Cam Op</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-none w-[85vw] md:w-[600px] bg-zinc-900/50 border border-zinc-800 p-6 md:p-8 rounded-xl snap-center hover:border-white/20 transition-colors pointer-events-none md:pointer-events-auto">
+                    <h3 class="text-4xl md:text-5xl text-gray-400 font-bold font-credits mb-6 border-b border-zinc-800 pb-4">2023</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-400 text-sm">Rawabi School S2</span><span class="text-[10px] text-zinc-600">Video Asst</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-400 text-sm">B3eed (Short)</span><span class="text-[10px] text-zinc-600">Director</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-400 text-sm">Durex (TVC)</span><span class="text-[10px] text-zinc-600">Director & DOP</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-400 text-sm">Elevator Pilot</span><span class="text-[10px] text-zinc-600">DOP</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-400 text-sm">UNSPOKEN (Doc)</span><span class="text-[10px] text-zinc-600">DOP</span></div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-400 text-sm">Way Home</span><span class="text-[10px] text-zinc-600">2nd AC</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-400 text-sm">Awlad El Jedar</span><span class="text-[10px] text-zinc-600">Focus Puller</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-400 text-sm">Nobani Show 5</span><span class="text-[10px] text-zinc-600">2nd AC</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-400 text-sm">Mental Health PSA</span><span class="text-[10px] text-zinc-600">DOP</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-400 text-sm">GHS Event</span><span class="text-[10px] text-zinc-600">Operator</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-none w-[85vw] md:w-[600px] bg-zinc-900/50 border border-zinc-800 p-6 md:p-8 rounded-xl snap-center hover:border-white/20 transition-colors">
+                    <h3 class="text-4xl md:text-5xl text-gray-500 font-bold font-credits mb-6 border-b border-zinc-800 pb-4">2022 / 2021</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+                        <div class="space-y-3">
+                            <h4 class="text-lg font-bold text-gray-400 mb-2">2022</h4>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-500 text-sm">Dior (Cairo)</span><span class="text-[10px] text-zinc-600">2nd AC</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-500 text-sm">Louis Vuitton</span><span class="text-[10px] text-zinc-600">Cam Asst</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-500 text-sm">S.A.S Reality</span><span class="text-[10px] text-zinc-600">Cam Asst</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-500 text-sm">Taxi El 3alm</span><span class="text-[10px] text-zinc-600">DOP</span></div>
+                        </div>
+                        <div class="space-y-3">
+                            <h4 class="text-lg font-bold text-gray-400 mb-2">2021</h4>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-500 text-sm">Geely (TVC)</span><span class="text-[10px] text-zinc-600">Focus Puller</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-500 text-sm">Marriott Doc</span><span class="text-[10px] text-zinc-600">DOP</span></div>
+                            <div class="flex justify-between items-center p-2 border-b border-zinc-800/50"><span class="text-gray-500 text-sm">Andrews Cold Brew</span><span class="text-[10px] text-zinc-600">DOP</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spacer -->
+                <div class="flex-none w-4"></div>
+            </div>
+            
+            <p class="text-center text-zinc-500 font-mono text-[10px] mt-6 tracking-widest animate-pulse">
+                <i data-lucide="arrow-left-right" class="inline w-3 h-3 mr-1"></i> SWIPE FOR HISTORY
+            </p>
+        </div>
+    </section>
+
+    <!-- Plot Twist -->
+    <section id="plot-twist" class="min-h-screen w-full flex items-center justify-center bg-[#0f0a0a] relative overflow-hidden py-12">
+        <div class="absolute inset-0 opacity-20 pointer-events-none">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="olive-glow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" style="stop-color:#556b2f;stop-opacity:0.6" />
+                        <stop offset="100%" style="stop-color:#0a0a0a;stop-opacity:0" />
+                    </radialGradient>
+                </defs>
+                <circle cx="20%" cy="30%" r="20%" fill="url(#olive-glow)" opacity="0.5" />
+                <circle cx="80%" cy="70%" r="25%" fill="url(#olive-glow)" opacity="0.5" />
+            </svg>
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM1NTZiMmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMCAwaDQwdjQwSDBWMHptMjAgMjBoMjB2MjBIMjAyMHpNOCAxMnYyaDJ2LTJIOHptMCA4djJoMnYtMkg4em0wIDh2Mmgydi0ySDh6bTggMHYiaDJ2LTJoLTJ6bTggMHYiaDJ2LTJoLTJ6bTggMHYiaDJ2LTJoLTJ6TTggOHYiaDJWOEhOHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
+        </div>
+        <div class="container mx-auto px-4 md:px-6 relative z-10 grid grid-cols-1">
+            
+            <div class="gsap-fade-up order-1 md:order-1 text-center max-w-2xl mx-auto">
+                <div class="relative flex flex-col items-center justify-center mb-8">
+                    <div class="absolute top-[-40px] bottom-[-20px] w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+                    <div class="relative z-10 bg-[#0f0a0a] py-4 px-6 flex flex-col items-center text-center">
+                        <h2 class="text-4xl md:text-6xl text-white title-minimal">PLOT TWIST</h2>
+                        <p class="text-[10px] md:text-xs text-gray-500 tracking-[0.3em] uppercase mt-2">THE TURNING POINT • 2024</p>
+                    </div>
+                </div>
+                
+                <p class="text-lg md:text-2xl text-gray-300 leading-relaxed mb-10 font-light">
+                    Late 2024 changed everything. Yousef found his soulmate and made a bold choice: moving to a full-time job to organize his life and settle down. He chose <span class="text-[#8BA888] font-bold border-b border-[#8BA888]">us</span>.
+                </p>
+
+                <div class="p-6 border-l-4 border-[#556b2f] bg-gradient-to-r from-[#556b2f]/20 to-transparent rounded-r-sm backdrop-blur-sm mx-auto max-w-xl">
+                    <div class="flex gap-1 mb-3 text-[#556b2f] justify-center"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
+                    <p class="font-handwriting text-gray-200 text-xl md:text-3xl leading-relaxed">
+                        "To Yousef: I see your effort, and I appreciate you trying for my sake. I love you."
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Dubai Comeback -->
+    <section id="dubai" class="min-h-screen w-full flex flex-col items-center justify-center bg-zinc-950 relative border-t border-zinc-800 py-12">
+        <div class="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div class="gsap-fade-up">
+                <div class="relative flex flex-col items-start justify-center mb-8">
+                    <div class="absolute top-[-40px] bottom-[-20px] left-6 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+                    <div class="relative z-10 bg-zinc-950 py-4 pr-6 flex flex-col items-start text-left">
+                        <span class="chapter-number text-4xl font-bold block leading-none opacity-50 mb-2">04</span>
+                        <h2 class="text-3xl md:text-6xl text-white title-minimal">THE DUBAI COMEBACK</h2>
+                        <p class="text-[10px] md:text-xs text-gray-500 font-mono-code tracking-[0.3em] uppercase mt-2">RESILIENCE • RETURN</p>
+                    </div>
+                </div>
+                <p class="text-base md:text-xl text-gray-300 font-light leading-relaxed mb-6">
+                    The return wasn't scripted. It started with a void—a quiet season that truly tested him.
+                    <br><br>
+                    But true character reveals itself in the silence. He didn't break; he adapted. He turned the "gap" into a grind.
+                </p>
+                <div class="mt-6 md:mt-8 flex items-center gap-4 text-xs md:text-sm font-mono text-gray-500">
+                    <i data-lucide="plane-landing" class="text-white w-4 h-4 md:w-5 md:h-5"></i>
+                    <span>AMM ➔ DXB (RETURN)</span>
+                </div>
+            </div>
+            <div class="relative h-[300px] md:h-[400px] bg-black rounded-lg border border-zinc-700 overflow-hidden p-4 flex items-center justify-center gsap-slide-right">
+                <svg viewBox="0 0 400 300" class="w-full h-full opacity-80">
+                    <path d="M 50 100 Q 200 50 350 250" stroke="#333" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+                    <circle cx="50" cy="100" r="6" fill="#fff" />
+                    <text x="30" y="80" fill="#fff" font-family="monospace" font-size="12">AMMAN</text>
+                    <circle cx="350" cy="250" r="6" fill="#ff3b30" class="animate-pulse" />
+                    <text x="330" y="280" fill="#ff3b30" font-family="monospace" font-size="12">DUBAI</text>
+                    <circle cx="0" cy="0" r="4" fill="white">
+                        <animateMotion path="M 50 100 Q 200 50 350 250" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transition -->
+    <section class="h-[50vh] w-full flex flex-col items-center justify-center bg-black relative border-t border-zinc-900 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-black to-black opacity-50"></div>
+        <div class="z-10 text-center gsap-scale-in">
+            <div class="mb-6 relative">
+                <div class="absolute inset-0 bg-blue-500 blur-xl opacity-20 rounded-full"></div>
+                <i data-lucide="unlock" class="w-12 h-12 md:w-16 md:h-16 text-blue-500 mx-auto relative z-10"></i>
+            </div>
+            <h2 class="text-4xl md:text-6xl font text-white tracking-tighter mb-4 uppercase">NEW CHAPTER <span class="text-blue-500">UNLOCKED</span></h2>
+            <div class="w-48 md:w-64 mx-auto h-1 bg-zinc-800 rounded-full mt-4 overflow-hidden">
+                <div class="h-full bg-blue-500 w-full animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]"></div>
+            </div>
+            <p class="font-mono text-[10px] md:text-xs text-blue-400 mt-4 tracking-[0.3em] uppercase animate-pulse">INITIALIZING STUDIO PROTOCOLS...</p>
+        </div>
+    </section>
+
+    <!-- Imvent Studios -->
+    <section id="imvent" class="min-h-screen w-full flex flex-col items-center justify-center bg-black relative overflow-hidden py-12">
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+        <div class="container mx-auto px-4 md:px-6 relative z-10 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div class="text-left order-2 md:order-1 gsap-fade-up">
+                <div class="mb-6 md:mb-8 inline-block">
+                    <div class="flex items-center gap-2 px-3 py-1 md:px-4 md:py-2 bg-blue-900/20 border border-blue-500/50 rounded-full text-blue-400 font-mono text-[10px] md:text-xs tracking-widest animate-pulse">
+                        <div class="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-400 rounded-full"></div>
+                        CURRENT STATUS: DEPLOYED
+                    </div>
+                </div>
+                <div class="relative flex flex-col items-start justify-center mb-8">
+                    <div class="absolute top-[-40px] bottom-[-20px] left-6 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+                    <div class="relative z-10 bg-black py-4 pr-6 flex flex-col items-start text-left">
+                        <h2 class="text-4xl md:text-7xl text-white title-minimal">IMVENT STUDIOS</h2>
+                        <p class="text-[10px] md:text-xs text-gray-500 font-mono-code tracking-[0.3em] uppercase mt-2">CURRENT CHAPTER • STUDIO OPERATOR</p>
+                    </div>
+                </div>
+                <a href="https://www.imventstudios.com/" target="_blank" class="inline-block hover:text-blue-400 transition-colors mb-8">
+                    <h3 class="text-xl md:text-2xl text-gray-500 font-credits tracking-[0.3em] flex items-center gap-2">STUDIO OPERATOR <i data-lucide="external-link" class="w-4 h-4 md:w-5 md:h-5"></i></h3>
+                </a>
+                <div class="space-y-4">
+                    <div class="bg-zinc-900/80 border border-zinc-800 p-4 rounded hover:border-blue-500/50 transition-colors flex items-start gap-4">
+                        <div class="p-2 bg-blue-500/10 rounded"><i data-lucide="briefcase" class="w-5 h-5 text-blue-500"></i></div>
+                        <div><h4 class="text-white font-bold text-sm font-credits">FULL TIME</h4><p class="text-xs text-gray-400">The goal of stability achieved.</p></div>
+                    </div>
+                    <div class="bg-zinc-900/80 border border-zinc-800 p-4 rounded hover:border-blue-500/50 transition-colors flex items-start gap-4">
+                        <div class="p-2 bg-blue-500/10 rounded"><i data-lucide="layers" class="w-5 h-5 text-blue-500"></i></div>
+                        <div><h4 class="text-white font-bold text-sm font-credits">OPERATIONS</h4><p class="text-xs text-gray-400">Managing the flow. Controlling the chaos.</p></div>
+                    </div>
+                    <div class="bg-zinc-900/80 border border-zinc-800 p-4 rounded hover:border-blue-500/50 transition-colors flex items-start gap-4">
+                        <div class="p-2 bg-blue-500/10 rounded"><i data-lucide="rocket" class="w-5 h-5 text-blue-500"></i></div>
+                        <div><h4 class="text-white font-bold text-sm font-credits">NEW ERA</h4><p class="text-xs text-gray-400">This isn't the end. It's the new launchpad.</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="order-1 md:order-2 relative h-[350px] md:h-[500px] bg-zinc-900 rounded-lg border border-zinc-800 overflow-hidden gsap-scale-in shadow-2xl group">
+                 <div class="absolute inset-0 bg-gradient-to-tr from-blue-900/20 to-transparent mix-blend-overlay z-10 pointer-events-none"></div>
+                 <img src="https://i.ibb.co/FkLyY8x4/Whats-App-Image-2025-12-05-at-12-07-20-AM-1.jpg" alt="Imvent Studios Era" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700">
+                 <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-transparent z-20"></div>
+                 <div class="absolute top-4 right-4 z-20"><i data-lucide="aperture" class="w-6 h-6 text-blue-400 animate-spin-slow opacity-70"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Finale -->
+    <section id="finale" class="h-screen w-full flex flex-col items-center justify-center bg-zinc-950 relative border-t border-zinc-900">
+        <div class="absolute inset-0 bg-radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%)"></div>
+        <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+            <h1 class="text-[18vw] font-bold text-white leading-none" style="font-family: 'Anton', sans-serif;">PROUD</h1>
+        </div>
+        <div class="text-center z-10 px-6 max-w-2xl gsap-fade-up">
+            <div class="w-16 md:w-24 h-1 bg-gradient-to-r from-transparent via-white to-transparent mx-auto mb-12"></div>
+            
+            <div class="text-justify mx-auto" style="font-family: 'Oswald', sans-serif; text-align-last: center;">
+                <p class="text-base md:text-xl text-gray-300 leading-relaxed tracking-widest uppercase mb-6">
+                    I AM SO INCREDIBLY PROUD OF EVERY STEP YOU'VE TAKEN. YOU FACED THE UNKNOWN, YOU FOUGHT THROUGH THE EMPTY DAYS, AND YOU BUILT YOUR OWN PATH.
+                </p>
+                <p class="text-base md:text-xl text-white leading-relaxed tracking-widest uppercase mb-6 font-medium">
+                    THIS IS STILL JUST THE BEGINNING YOUSEF. YOUR MOVIE IS JUST GETTING STARTED.
+                </p>
+                <p class="text-base md:text-xl text-gray-300 leading-relaxed tracking-widest uppercase font-light">
+                    I AM CERTAIN THAT YOU WILL REACH EVERYTHING YOU WANT.
+                </p>
+            </div>
+            
+            <div class="relative group cursor-default mt-16 inline-block">
+                <div class="absolute -inset-1 bg-white/10 rounded-sm blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+                <div class="relative px-8 py-4 bg-black ring-1 ring-white/20 rounded-sm flex items-center gap-4">
+                    <div class="w-1.5 h-1.5 bg-white rounded-full animate-ping"></div>
+                    <span class="font-credits text-xs md:text-sm text-gray-300 tracking-[0.3em] uppercase group-hover:text-white transition-colors">TO BE CONTINUED...</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-gray-500 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black py-12 text-center border-t border-zinc-900">
+        <p class="text-gray-500 font-credits text-xs md:text-sm mb-4 tracking-widest">HAPPY ANNIVERSARY MY LOVE</p>
+        <p class="text-zinc-700 text-[10px] md:text-xs tracking-[0.4em] uppercase font-mono-code">DIRECTED, PRODUCED & EDITED WITH LOVE</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+        // Custom Message Box Function
+        function showMessage(text) {
+            const messageBox = document.getElementById('messageBox');
+            if (messageBox) {
+                messageBox.textContent = "🔒 " + text;
+                messageBox.classList.add('show');
+                setTimeout(() => {
+                    messageBox.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Intro Anim
+        const tl = gsap.timeline();
+        tl.to(".intro-anim", { y: 0, opacity: 1, duration: 1, stagger: 0.3, ease: "power3.out", delay: 0.5 })
+          .to("#intro-bg", { scale: 1, duration: 10, ease: "none" }, "<");
+
+        // Typewriter
+        const textToType = `I made this to honor your journey. To me, you are a star.\n\nI see the effort you put into every detail, even when you don't see it yourself.\n\nWhenever you need a reminder of your power and how much you have done, look here. I believe in you, always.`;
+        
+        ScrollTrigger.create({
+            trigger: "#typewriter-text",
+            start: "top 80%",
+            onEnter: () => {
+                let i = 0;
+                function typeWriter() {
+                    if (i < textToType.length) {
+                        const char = textToType.charAt(i);
+                        document.getElementById("typewriter-text").innerHTML += char === '\n' ? '<br>' : char;
+                        i++;
+                        setTimeout(typeWriter, 40);
+                    } else {
+                        const finalContent = document.getElementById("typewriter-text").innerHTML.replace("star", "<span class='glowing-star'>star</span>");
+                        document.getElementById("typewriter-text").innerHTML = finalContent;
+                        gsap.to(".reveal-sig", { opacity: 0.8, duration: 1 });
+                    }
+                }
+                typeWriter();
+            },
+            once: true
+        });
+
+        // Animations
+        gsap.utils.toArray(".chapter-number").forEach(el => {
+            gsap.from(el, { scrollTrigger: { trigger: el, start: "top 80%" }, x: -50, opacity: 0, duration: 1 });
+        });
+        gsap.utils.toArray(".gsap-fade-up").forEach(el => {
+            gsap.from(el, { scrollTrigger: { trigger: el, start: "top 85%" }, y: 50, opacity: 0, duration: 0.8 });
+        });
+        gsap.utils.toArray(".gsap-scale-in").forEach(el => {
+            gsap.from(el, { scrollTrigger: { trigger: el, start: "top 85%" }, scale: 0.9, opacity: 0, duration: 0.8 });
+        });
+        gsap.utils.toArray(".gsap-slide-right").forEach((el, i) => {
+            gsap.from(el, { scrollTrigger: { trigger: el, start: "top 85%" }, x: -50, opacity: 0, duration: 0.8, delay: i * 0.1 });
+        });
+
+        // Portfolio Drag
+        const portfolio = document.getElementById('portfolioContainer');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        if(portfolio){
+            portfolio.addEventListener('mousedown', (e) => {
+                isDown = true;
+                portfolio.classList.add('cursor-grabbing');
+                startX = e.pageX - portfolio.offsetLeft;
+                scrollLeft = portfolio.scrollLeft;
+            });
+            portfolio.addEventListener('mouseleave', () => { isDown = false; portfolio.classList.remove('cursor-grabbing'); });
+            portfolio.addEventListener('mouseup', () => { isDown = false; portfolio.classList.remove('cursor-grabbing'); });
+            portfolio.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - portfolio.offsetLeft;
+                const walk = (x - startX) * 2;
+                portfolio.scrollLeft = scrollLeft - walk;
+            });
+        }
+    </script>
+</body>
+</html>
